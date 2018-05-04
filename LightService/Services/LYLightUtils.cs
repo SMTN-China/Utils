@@ -159,7 +159,8 @@ namespace LightService
             ArrayList HW_CodeList = new ArrayList();
             foreach (var kwh in dic.Keys)
             {
-                HW_CodeList.Add(mainBoardID.ToString().PadLeft(3, '0') + kwh.ToString().PadLeft(3, '0'));
+                HW_CodeList.Add(mainBoardID.ToString().PadLeft(3, '0') + (kwh > 700 ? (kwh - 700).ToString() :
+                            kwh.ToString()).PadLeft(3, '0'));
                 //Group group = QueryGroup(kwh > 700 ? (kwh - 700) : kwh);       //获取灯的详细信息
                 //string nowBinary = Convert.ToString(Convert.ToInt32(str[group.GroupIndex].ToString(), 16), 2).PadLeft(4, '0');      //当前灯所在组的灯状态二进制组合命令
                 //char[] arryChar = nowBinary.ToCharArray();      //将二进制组合命令拆分成单灯的命令组               

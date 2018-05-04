@@ -183,7 +183,9 @@ namespace LightService.Services
                 {
                     if (lights[0].LightColor > 0)
                     {
-                        order.Enqueue(LightUtils.GetOneLightOrder_RGB(lights[0].MainBoardId.ToString().PadLeft(3, '0') + lights[0].RackPositionId.ToString().PadLeft(3, '0'), lights[0].LightOrder.ToString(), lights[0].LightColor, "5"));
+                        order.Enqueue(LightUtils.GetOneLightOrder_RGB(lights[0].MainBoardId.ToString().PadLeft(3, '0') +
+                            (lights[0].RackPositionId > 700 ? (lights[0].RackPositionId - 700).ToString() :
+                            lights[0].RackPositionId.ToString()).PadLeft(3, '0'), lights[0].LightOrder.ToString(), lights[0].LightColor, "5"));
                     }
                     else
                     {

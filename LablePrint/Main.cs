@@ -17,10 +17,13 @@ namespace LablePrint
 {
     public partial class Main : Form
     {
+        public static BarTender.Application btApp = new BarTender.Application();
+        public static BarTender.Format btFormat;
+
         public Main()
         {
             InitializeComponent();
-            
+
         }
 
 
@@ -81,7 +84,9 @@ namespace LablePrint
 
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.GetCurrentProcess().Kill(); ;
+            // btFormat.Close();
+            Process.GetProcessById(btApp.ProcessId).Kill();
+            Process.GetCurrentProcess().Kill();
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

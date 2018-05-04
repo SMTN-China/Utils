@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Windows.Forms;
 
 namespace LablePrint.Controllers
 {
@@ -16,8 +17,6 @@ namespace LablePrint.Controllers
     {
         public HttpHelp HttpHelp { get; set; }
 
-       
-
         /// <summary>
         ///  料卷标签打印
         /// </summary>
@@ -25,29 +24,27 @@ namespace LablePrint.Controllers
         [HttpPost]
         public void PrintReelLable(PrintReelDto printReelDto)
         {
-            BarTender.Application btApp = new BarTender.Application();
-            BarTender.Format btFormat;
             for (int i = 0; i < printReelDto.ReelQty; i++)
             {
                 var reelOutLife = HttpHelp.RequsetAbp<PrintReelDto>(RequsetMethod.POST, "/api/services/app/PrintReel/GetNewPrintReel", printReelDto, null, false).Result;
                 try
                 {
 
-                    string Path = System.Environment.CurrentDirectory + "\\" + ConfigurationManager.AppSettings["printTemp"];
-                    btFormat = btApp.Formats.Open(@Path, true, "");
-                    btFormat.PrintSetup.IdenticalCopiesOfLabel = 1;
-                    btApp.Visible = false;
-                    btFormat.PrintSetup.NumberSerializedLabels = 1;
-                    btFormat.SetNamedSubStringValue("PartNoId", reelOutLife.PartNoId);
-                    btFormat.SetNamedSubStringValue("Qty", reelOutLife.Qty.ToString());
-                    btFormat.SetNamedSubStringValue("DateCode", reelOutLife.DateCode);
-                    btFormat.SetNamedSubStringValue("Id", reelOutLife.Id);
-                    btFormat.SetNamedSubStringValue("LotCode", reelOutLife.LotCode);
-                    btFormat.SetNamedSubStringValue("Supplier", reelOutLife.Supplier);
-                    btFormat.SetNamedSubStringValue("Info", reelOutLife.Info);
-                    btFormat.SetNamedSubStringValue("Name", reelOutLife.Name);
-                    btFormat.PrintOut(false, false);
-                    btFormat.Close(BarTender.BtSaveOptions.btDoNotSaveChanges);
+                    string Path = Application.StartupPath + "\\" + ConfigurationManager.AppSettings["printTemp"];
+                    Main.btFormat = Main.btApp.Formats.Open(@Path, true, "");
+                    Main.btFormat.PrintSetup.IdenticalCopiesOfLabel = 1;
+                    Main.btApp.Visible = false;
+                    Main.btFormat.PrintSetup.NumberSerializedLabels = 1;
+                    Main.btFormat.SetNamedSubStringValue("PartNoId", reelOutLife.PartNoId);
+                    Main.btFormat.SetNamedSubStringValue("Qty", reelOutLife.Qty.ToString());
+                    Main.btFormat.SetNamedSubStringValue("DateCode", reelOutLife.DateCode);
+                    Main.btFormat.SetNamedSubStringValue("Id", reelOutLife.Id);
+                    Main.btFormat.SetNamedSubStringValue("LotCode", reelOutLife.LotCode);
+                    Main.btFormat.SetNamedSubStringValue("Supplier", reelOutLife.Supplier);
+                    Main.btFormat.SetNamedSubStringValue("Info", reelOutLife.Info);
+                    Main.btFormat.SetNamedSubStringValue("Name", reelOutLife.Name);
+                    Main.btFormat.PrintOut(false, false);
+                    Main.btFormat.Close(BarTender.BtSaveOptions.btDoNotSaveChanges);
                 }
                 catch (Exception ex)
                 {
